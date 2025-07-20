@@ -29,7 +29,7 @@ app.get('/health', (req, res) => {
 });
 
 // 예약 저장
-app.post('https://motorholic-backend.onrender.com/api/reserve', async (req, res) => {
+app.post('/api/reserve', async (req, res) => {
   try {
     const newReservation = new Reservation(req.body);
     await newReservation.save();
@@ -38,7 +38,7 @@ app.post('https://motorholic-backend.onrender.com/api/reserve', async (req, res)
     res.status(500).send('서버 오류');
   }
 });
-app.post('https://motorholic-backend.onrender.com/api/reserve', async (req, res) => {
+app.post('/api/reserve', async (req, res) => {
   try {
     console.log('📥 요청 데이터:', req.body); // 확인용
 
@@ -54,7 +54,7 @@ app.post('https://motorholic-backend.onrender.com/api/reserve', async (req, res)
 
 
 // 예약 전체 조회 (관리자페이지용)
-app.get('https://motorholic-backend.onrender.com/api/reserve', async (req, res) => {
+app.get('/api/reserve', async (req, res) => {
   try {
     const reservations = await Reservation.find().sort({ createdAt: -1 });
     res.json(reservations);
