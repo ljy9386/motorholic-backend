@@ -3,8 +3,11 @@ const mongoose = require('mongoose');
 const Reservation = require('./models/Reservation');
 const app = express();
 const path = require('path');
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://skdmstn00.mycafe24.com'
+}));
 
-app.use(require('cors')());
 require('dotenv').config();
 
 app.use(express.json());
@@ -14,7 +17,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.use(express.static(path.join(__dirname))); 
+app.use(express.static(path.join(__dirname)));
 // 이미지 폴더
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
