@@ -4,8 +4,11 @@ const Reservation = require('./models/Reservation');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+
 app.use(cors({
-  origin: 'https://skdmstn00.mycafe24.com'
+  origin: 'https://skdmstn00.mycafe24.com',
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
 
 require('dotenv').config();
