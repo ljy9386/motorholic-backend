@@ -63,6 +63,20 @@ app.get('/api/reserve', async (req, res) => {
   }
 });
 
+// 회원 삭제기능
+app.delete('/api/reserve/:id', async (req, res) => {
+  try {
+    const result = await Reservation.findByIdAndDelete(req.params.id);
+    if (result) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(3000, () => {
   console.log('✅ 서버 실행 중: http://localhost:3000');
 });
