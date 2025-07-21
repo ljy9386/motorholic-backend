@@ -7,9 +7,10 @@ const cors = require('cors');
 
 app.use(cors({
   origin: 'http://motorholic.co.kr',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
+
 
 require('dotenv').config();
 
