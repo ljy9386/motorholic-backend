@@ -6,7 +6,7 @@ const path = require('path');
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'https://skdmstn00.mycafe24.com',
+  origin: 'http://motorholic.co.kr',
   methods: ['GET', 'POST'],
   credentials: true
 }));
