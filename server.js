@@ -6,7 +6,7 @@ const path = require('path');
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'http://motorholic.co.kr',
+  origin: ['http://motorholic.co.kr', 'https://motorholic.co.kr'],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
