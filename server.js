@@ -28,26 +28,18 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// 예약 저장
+
+// ✅ 이걸로 통일 (console.log 확인용 포함)
 app.post('/api/reserve', async (req, res) => {
   try {
-    const newReservation = new Reservation(req.body);
-    await newReservation.save();
-    res.status(201).send('예약 완료');
-  } catch (err) {
-    res.status(500).send('서버 오류');
-  }
-});
-app.post('/api/reserve', async (req, res) => {
-  try {
-    console.log('📥 요청 데이터:', req.body); // 확인용
+    console.log('📥 요청 데이터:', req.body);
 
     const newReservation = new Reservation(req.body);
     await newReservation.save();
 
     res.status(201).send('예약 완료');
   } catch (err) {
-    console.error('❌ 저장 실패:', err); // 에러 로그 출력
+    console.error('❌ 저장 실패:', err);
     res.status(500).send('서버 오류');
   }
 });
