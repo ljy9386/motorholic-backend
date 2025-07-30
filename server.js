@@ -1,3 +1,5 @@
+require('dotenv').config(); // ⬅ 이거 맨 위로 올려줘
+
 const express = require('express');
 const mongoose = require('mongoose');
 const Reservation = require('./models/Reservation');
@@ -9,9 +11,6 @@ app.use(cors({
   origin: ['http://motorholic.co.kr', 'https://motorholic.co.kr'],
   credentials: true
 }));
-
-
-require('dotenv').config();
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_URI);
