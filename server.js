@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const sendSMS = require('./utils/aligo');
+const axios = require('axios');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -25,6 +26,17 @@ app.get('/', (req, res) => {
 app.use(express.static(path.join(__dirname)));
 // 이미지 폴더
 app.use('/img', express.static(path.join(__dirname, 'img')));
+
+
+// 외부 IP 확인용 엔드포인트
+app.get('/myip', async (req, res) => {
+  try {
+    const { data } = await axios.get('https://api.ipify.org?format=json');
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ error: err.toString() });
+  }
+});
 
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
