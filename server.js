@@ -1,4 +1,7 @@
-require('dotenv').config(); // ⬅ 이거 맨 위로 올려줘
+
+
+require('dotenv').config();
+const sendSMS = require('./utils/aligo');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -35,6 +38,17 @@ app.post('/api/reserve', async (req, res) => {
 
     const newReservation = new Reservation(req.body);
     await newReservation.save();
+
+    // 알리고 문자 발송
+    try {
+      await sendSMS({
+        receiver: '01066262501',
+        msg: `[모토홀릭] 새 예약이 등록되었습니다.\n이름: ${req.body.name}\n연락처: ${req.body.phone}`
+      });
+      console.log('📤 SMS 전송 성공');
+    } catch (smsErr) {
+      console.error('❌ SMS 전송 실패', smsErr);
+    }
 
     res.status(201).send('예약 완료');
   } catch (err) {
