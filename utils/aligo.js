@@ -11,7 +11,7 @@ async function sendSMS({ receiver, msg }) {
     sender: process.env.ALIGO_SENDER,
     receiver,
     msg,
-    testmode_yn: 'N'
+    testmode_yn: 'Y'
   };
 
   try {

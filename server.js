@@ -1,5 +1,3 @@
-
-
 require('dotenv').config();
 const sendSMS = require('./utils/aligo');
 const axios = require('axios');
