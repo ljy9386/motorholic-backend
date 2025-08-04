@@ -52,7 +52,7 @@ app.post('/api/reserve', async (req, res) => {
     // 알리고 문자 발송
     try {
       await sendSMS({
-        receiver: '01066262501',
+        receiver: '01048408986',
         msg: `[모토홀릭] 새 예약이 등록되었습니다.\n이름: ${req.body.name}\n연락처: ${req.body.phone}`
       });
       console.log('📤 SMS 전송 성공');
