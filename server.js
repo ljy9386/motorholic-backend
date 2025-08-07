@@ -9,6 +9,8 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 
+const rateLimiter = new Map(); // 중복 요청 방지용 메모리 저장소
+
 app.use(cors({
   origin: ['http://motorholic.co.kr', 'https://motorholic.co.kr'],
   credentials: true
@@ -45,6 +47,17 @@ app.get('/health', (req, res) => {
 app.post('/api/reserve', async (req, res) => {
   try {
     console.log('📥 요청 데이터:', req.body);
+
+    const key = `${req.body.name}-${req.body.phone}`;
+    const now = Date.now();
+
+    if (rateLimiter.has(key)) {
+      const lastTime = rateLimiter.get(key);
+      if (now - lastTime < 60000) { // 1분 이내면 거절
+        return res.status(429).send('중복 신청이 감지되었습니다. 잠시 후 다시 시도해주세요.');
+      }
+    }
+    rateLimiter.set(key, now);
 
     const newReservation = new Reservation(req.body);
     await newReservation.save();
