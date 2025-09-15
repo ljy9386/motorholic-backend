@@ -17,14 +17,23 @@ const allowlist = new Set([
   'https://www.motorholic.co.kr',
   'http://www.motorholic.co.kr',
   'http://localhost:5500',
-  'http://127.0.0.1:5500'
+  'http://127.0.0.1:5500',
+  'https://motorholic-backend.onrender.com',
+  'http://motorholic-backend.onrender.com'
 ]);
 
 const corsOptions = {
   origin(origin, cb) {
     // allow server-to-server/health checks (no Origin)
-    if (!origin) return cb(null, true);
-    if (allowlist.has(origin)) return cb(null, true);
+    if (!origin) {
+      console.log('[CORS] No Origin header: allow');
+      return cb(null, true);
+    }
+    if (allowlist.has(origin)) {
+      console.log('[CORS] Allowed origin:', origin);
+      return cb(null, true);
+    }
+    console.warn('[CORS] Blocked origin:', origin);
     return cb(new Error(`CORS blocked: ${origin}`));
   },
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
@@ -34,6 +43,7 @@ const corsOptions = {
 
 // CORS must be before all routes
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_URI);
