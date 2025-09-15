@@ -11,10 +11,31 @@ const cors = require('cors');
 
 const rateLimiter = new Map(); // 중복 요청 방지용 메모리 저장소
 
-app.use(cors({
-  origin: ['http://motorholic.co.kr', 'https://motorholic.co.kr'],
-  credentials: true
-}));
+const allowlist = new Set([
+  'https://motorholic.co.kr',
+  'http://motorholic.co.kr',
+  'https://www.motorholic.co.kr',
+  'http://www.motorholic.co.kr',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
+]);
+
+const corsOptions = {
+  origin(origin, cb) {
+    // allow server-to-server/health checks (no Origin)
+    if (!origin) return cb(null, true);
+    if (allowlist.has(origin)) return cb(null, true);
+    return cb(new Error(`CORS blocked: ${origin}`));
+  },
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  credentials: false
+};
+
+// CORS must be before all routes
+app.use(cors(corsOptions));
+// Explicitly handle preflight for all routes
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_URI);
@@ -41,6 +62,9 @@ app.get('/myip', async (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
+
+// Avoid noisy 404 for browsers requesting /favicon.ico
+app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
 
 // ✅ 이걸로 통일 (console.log 확인용 포함)
