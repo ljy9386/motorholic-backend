@@ -43,7 +43,6 @@ const corsOptions = {
 
 // CORS must be before all routes
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_URI);
