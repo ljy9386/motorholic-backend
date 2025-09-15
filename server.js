@@ -34,8 +34,6 @@ const corsOptions = {
 
 // CORS must be before all routes
 app.use(cors(corsOptions));
-// Explicitly handle preflight for all routes
-app.options('*', cors(corsOptions));
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_URI);
